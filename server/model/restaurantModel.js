@@ -45,7 +45,7 @@ const restaurantSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
-    ratingQuanity: {
+    ratingQuantity: {
         type: Number,
         default: 0
     },

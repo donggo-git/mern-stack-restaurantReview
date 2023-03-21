@@ -1,7 +1,8 @@
 const Restaurant = require('../model/restaurantModel')
+const catchAsync = require('./catchAsyncController')
 
-exports.getAllRestaurants = async (req, res) => {
-    console.log("hello, thanks for make request")
+exports.getAllRestaurants = catchAsync(async (req, res) => {
+
     const restaurants = await Restaurant.find()
     res.status(200).json({
         status: 'success',
@@ -9,10 +10,9 @@ exports.getAllRestaurants = async (req, res) => {
             restaurants
         }
     })
+})
 
-}
-
-exports.createRestaurant = async (req, res) => {
+exports.createRestaurant = catchAsync(async (req, res) => {
     const newRestaurants = await Restaurant.create(req.body)
     res.status(200).json({
         status: 'success',
@@ -20,10 +20,44 @@ exports.createRestaurant = async (req, res) => {
             restaurants: newRestaurants
         }
     })
-}
+})
 
-exports.getRestaurant = (req, res) => { }
+exports.getRestaurant = catchAsync(async (req, res) => {
+    const restaurant = await Restaurant.findById(req.params.id)
 
-exports.updateRestaurant = (req, res) => { }
+    if (!restaurant) {
+        console.log('cannot find this restaurant')
+        return
+    }
+    res.status(200).json({
+        status: 'success',
+        data: {
+            restaurant
+        }
+    })
 
-exports.deleteRestaurant = (req, res) => { }
+})
+
+exports.updateRestaurant = catchAsync(async (req, res) => {
+    const restaurant = await Restaurant.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    })
+
+    res.status(200).json({
+        status: 'success',
+        data: { restaurant }
+    })
+})
+
+exports.deleteRestaurant = catchAsync(async (req, res) => {
+    const restaurant = await Restaurant.findByIdAndDelete(req.params.id)
+    if (!restaurant) {
+        console.log('restaurant not found');
+    }
+    const restaurants = await Restaurant.find()
+    res.status(201).json({
+        status: 'success',
+        data: { restaurants }
+    })
+})
