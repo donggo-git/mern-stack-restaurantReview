@@ -1,0 +1,22 @@
+@import "./variables.scss";
+
+header {
+    margin: 20px 0;
+    color: white;
+
+    input {
+        color: white;
+        background: none;
+        border: 1px solid white;
+        width: 20%;
+        padding: 0 20px;
+    }
+
+    input:focus {
+        outline: none;
+    }
+
+    input::placeholder {
+        opacity: 0.9;
+    }
+}
