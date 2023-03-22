@@ -1,0 +1,21 @@
+@import "./variables.scss";
+
+.RestaurantItem {
+    height: 180px;
+    width: 70%;
+    border-bottom: 1px solid $base-yellow-color;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+
+    img {
+        display: block;
+        height: 100%;
+        width: 30%;
+    }
+}
+
+.RestaurantItem:hover {
+    background-color: rgba($color: white, $alpha: 0.3);
+}

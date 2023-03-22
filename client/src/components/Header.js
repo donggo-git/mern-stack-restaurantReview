@@ -4,7 +4,7 @@ import '../scss/Header.scss'
 
 function Header() {
     return (
-        <header className='d-flex flex-row justify-content-evenly align-item-center'>
+        <header className='d-flex flex-row justify-content-evenly align-item-center py-3'>
             {/*user account */}
             <div className='header__account d-flex flex-row  align-items-center'>
                 {/*user icon */}
