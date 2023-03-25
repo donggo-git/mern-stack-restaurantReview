@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 
 const userSchema = new mongoose.Schema({
     userName: {
@@ -28,8 +29,22 @@ const userSchema = new mongoose.Schema({
             },
             message: "password confirm is not match"
         }
+    },
+    role: {
+        type: String,
+        default: "client"
     }
 
+})
+
+userSchema.pre('save', async function (next) {
+    //only run if password is modified
+    if (!this.isModified('password')) return next()
+    //hash the password with cost of 12
+    this.password = await bcrypt.hash(this.password, 12)
+    //delete password confirm
+    this.passwordConfirm = undefined;
+    next()
 })
 
 const User = mongoose.model('user', userSchema)
