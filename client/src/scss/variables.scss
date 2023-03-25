@@ -1,12 +1,14 @@
 $base-color: #3C3B3B;
 $base-yellow-color: #F7DE00;
+$gray: #D9D9D9;
 $light-gray: #535353;
 $container-padding: 10px;
 
 $theme-colors: (
     "primary":$base-yellow-color,
     "secondary":$light-gray,
-    "white":white
+    "white":white,
+    "gray":$gray
 );
 
 @import "~bootstrap/scss/bootstrap";

@@ -1,4 +1,3 @@
-import './App.css';
 import './scss/main.scss'
 import HomePage from './components/HomePage';
 

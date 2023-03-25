@@ -1,10 +1,9 @@
 import React from 'react'
 import StarRating from '../UI/StarRating'
+import { displayPhoneNumber } from '../ultility/ultility'
 import '../scss/RestaurantItem.scss'
 
 function RestaurantItem({ image, name, phoneNumber, address, rating }) {
-
-    const info = `Address: ${address}`
 
     return (
         <div
@@ -19,8 +18,8 @@ function RestaurantItem({ image, name, phoneNumber, address, rating }) {
                 {/*rating */}
                 <StarRating rating={rating} />
                 {/*restaurant basic info */}
-                <p>{info}</p>
-                <p>{phoneNumber}</p>
+                <p className='my-0 fs-7'>Address: {address}</p>
+                <p className='my-0 fs-7'>Phone number: {displayPhoneNumber(phoneNumber)}</p>
             </div>
         </div>
     )

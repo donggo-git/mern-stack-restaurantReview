@@ -10,7 +10,7 @@ function Header() {
                 {/*user icon */}
                 <div className='mx-2 py-2 px-3 bg-secondary rounded-circle'>D</div>
                 {/*user name */}
-                <p className='mx-2 text-primary'>Dong Nguyen</p>
+                <p className='mx-2 my-0 text-primary'>Dong Nguyen</p>
             </div>
             {/*search bar */}
             <input
