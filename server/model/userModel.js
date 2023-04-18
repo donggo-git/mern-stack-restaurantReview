@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         require: [true, 'account must have a password'],
-        trim: true
+        trim: true,
+        select: false
     },
     passwordConfirm: {
         type: String,
@@ -46,6 +47,11 @@ userSchema.pre('save', async function (next) {
     this.passwordConfirm = undefined;
     next()
 })
+
+//check when login if password user submit is the same with user password
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+    return await bcrypt.compare(candidatePassword, userPassword)
+}
 
 const User = mongoose.model('user', userSchema)
 module.exports = User
