@@ -56,9 +56,11 @@ exports.protect = catchAsync(async (req, res, next) => {
     }
 
     if (!token) {
-        return next(new AppError('You not logged in'));
+        return console.log('You not logged in') //next(new AppError('You not logged in'));
     }
     //2) Verification token
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+
     //3) check if user still exist
     //4) check if user change password after jwt was issues
     next()

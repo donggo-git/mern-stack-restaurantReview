@@ -1,4 +1,5 @@
 const Restaurant = require('../model/restaurantModel')
+const AppError = require('../utils/appError')
 const catchAsync = require('./catchAsyncController')
 
 exports.getAllRestaurants = catchAsync(async (req, res) => {
@@ -22,12 +23,11 @@ exports.createRestaurant = catchAsync(async (req, res) => {
     })
 })
 
-exports.getRestaurant = catchAsync(async (req, res) => {
+exports.getRestaurant = catchAsync(async (req, res, next) => {
     const restaurant = await Restaurant.findById(req.params.id)
 
     if (!restaurant) {
-        console.log('cannot find this restaurant')
-        return
+        return next(new AppError(`cannot find restaurant with id ${req.params.id}`, 404))
     }
     res.status(200).json({
         status: 'success',
@@ -44,6 +44,10 @@ exports.updateRestaurant = catchAsync(async (req, res) => {
         runValidators: true
     })
 
+    if (!restaurant) {
+        return next(new AppError(`cannot find restaurant with id ${req.params.id}`, 404))
+    }
+
     res.status(200).json({
         status: 'success',
         data: { restaurant }
@@ -52,9 +56,11 @@ exports.updateRestaurant = catchAsync(async (req, res) => {
 
 exports.deleteRestaurant = catchAsync(async (req, res) => {
     const restaurant = await Restaurant.findByIdAndDelete(req.params.id)
+
     if (!restaurant) {
-        console.log('restaurant not found');
+        return next(new AppError(`cannot find restaurant with id ${req.params.id}`, 404))
     }
+
     const restaurants = await Restaurant.find()
     res.status(201).json({
         status: 'success',

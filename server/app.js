@@ -3,6 +3,8 @@ const app = express()
 const restaurantRoute = require('./routes/restaurantRoute')
 const userRoute = require('./routes/userRoute')
 const morgan = require('morgan')
+const AppError = require('./utils/appError')
+const errorHandler = require('./controller/errorController')
 
 if (process.env.NODE_ENV == "development") {
     app.use(morgan('dev'))
@@ -27,11 +29,11 @@ app.use('/api/v1/restaurants', restaurantRoute)
 app.use('/api/v1/user', userRoute)
 //path not found
 app.all('*', (req, res, next) => {
-    res.status(404).json({
-        status: 'fail',
-        message: `Can't find ${req.originalUrl} on this server`
-    })
+    //res.status(404).json({
+
+    next(new AppError(`Can't find ${req.originalUrl} on this server`, 404))
 })
 
+app.use(errorHandler)
 
 module.exports = app
