@@ -4,7 +4,7 @@ const restaurantRoute = require('./routes/restaurantRoute')
 const userRoute = require('./routes/userRoute')
 const morgan = require('morgan')
 const AppError = require('./utils/appError')
-const errorHandler = require('./controller/errorController')
+const errorController = require('./controller/errorController')
 
 if (process.env.NODE_ENV == "development") {
     app.use(morgan('dev'))
@@ -34,6 +34,6 @@ app.all('*', (req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server`, 404))
 })
 
-app.use(errorHandler)
+app.use(errorController)
 
 module.exports = app

@@ -1,4 +1,5 @@
 const catchAsync = require('./catchAsyncController')
+const AppError = require('../utils/appError')
 const User = require('../model/userModel')
 const jwt = require('jsonwebtoken')
 
@@ -23,21 +24,20 @@ exports.signup = catchAsync(async (req, res, next) => {
     })
 })
 
-exports.login = catchAsync(async (req, res) => {
+exports.login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
 
     //check if email and password exist
     if (!email || !password) {
-        console.log('Please provide password or email')
-        return;
+        return next(new AppError('Please provide password or email', 400))
     }
     //check if user exist and password correct
     const user = await User.findOne({ email }).select('+password');
 
     //if cannot find user or wrong password return
     if (!user || !(await user.correctPassword(password, user.password))) {
-        console.log('Incorrect email or password')
-        return;
+
+        return next(new AppError('Incorrect email or password', 400))
     }
 
     //if everything ok, send token to client
