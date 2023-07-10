@@ -15,7 +15,7 @@ router.post('/resetPassword', userController.resetPassword)
 
 //update user info that's not password
 router.patch('/updateMe', userController.updateMe)
-router.patch('/updatePassword', userController.updatePassword)
+router.patch('/updatePassword/:token', userController.updatePassword)
 
 //get all user
 router.route('/')

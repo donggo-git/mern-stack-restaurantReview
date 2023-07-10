@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
+const crypto = require('crypto')
 
 const userSchema = new mongoose.Schema({
     userName: {
@@ -34,7 +35,11 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: "client"
-    }
+    },
+
+    passwordResetToken: String,
+
+    passwordResetExpire: Date
 
 })
 
@@ -51,6 +56,17 @@ userSchema.pre('save', async function (next) {
 //check when login if password user submit is the same with user password
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword)
+}
+
+userSchema.methods.createPasswordResetToken = async function () {
+    //generate random reset token from build in class crypto
+    const resetToken = crypto.randomBytes(32).toString('hex')
+
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
+
+    this.passwordResetExpire = Date.now() + 20 * 60 * 1000;
+
+    return resetToken;
 }
 
 const User = mongoose.model('user', userSchema)
